@@ -3,12 +3,37 @@ import { View, Text, StyleSheet, Picker, Button } from 'react-native'
 import Dropzone from 'react-dropzone'
 import MainHeader from '../Component/MainHeader'
 
+
 export default class Homescreen extends Component {
     constructor (props) {
         super(props)
         this.state = {
             function : '',
-        }  
+            filename : ''
+        } 
+        this.pressSumbitButtom = this.pressSumbitButtom.bind(this) 
+    }
+    pressSumbitButtom() {
+        const filename = {
+            filename : this.state.filename
+        }
+        return fetch('http://127.0.0.1:8000/filename/', {
+            mode : "cors",
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(filename)
+        }).then(res=> {
+            if(res.status != 200) {
+                console.log("error")
+                console.log(res.statusText)
+            }
+            else {
+                console.log("success")
+            }
+            return res.json();
+        })
     }
     render() {
         return (
@@ -23,9 +48,9 @@ export default class Homescreen extends Component {
                                 {acceptedFiles.length > 0 ? '' : "Click me or drag a file to upload!"}
                                 <ul>
                                     {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
+                                        this.state.filename ? '' : this.setState({filename : acceptedFile.name}),
                                         <li>
                                             {acceptedFile.name}
-                                            {console.log(this.state.fileisReady)}
                                         </li>
                                     ))}
                                 </ul>
@@ -43,7 +68,7 @@ export default class Homescreen extends Component {
                             <Picker.Item label="Style Transfer" value= "Style Transfer" />
                             <Picker.Item label="Frame Interpolation" value= "Frame Interpolation" />
                     </Picker>
-                    {(this.state.function) ?  <Button title= 'submit' style={{ width : 50, height: 100}}/> : <Text/>}
+                    {(this.state.function) && (this.state.filename) ?  <Button title= 'submit' style={{ width : 50, height: 100}} onPress={this.pressSumbitButtom}/> : <Text/>}
                 </View>
             </View>
         );

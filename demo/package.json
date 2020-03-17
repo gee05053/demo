@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-navigation/native": "^5.0.9",
+    "cors": "^2.8.5",
     "expo": "~36.0.0",
     "native-base": "^2.13.8",
     "react": "~16.9.0",
