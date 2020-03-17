@@ -7,8 +7,8 @@ export default class Homescreen extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            function : ''
-        }       
+            function : '',
+        }  
     }
     render() {
         return (
@@ -16,7 +16,7 @@ export default class Homescreen extends Component {
                 <MainHeader/>
                 <View style={styles.container}>
                     <Text style={{marginTop: 10}}>Hello Demo Version</Text>
-                    <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+                    <Dropzone>
                         {({getRootProps, getInputProps, acceptedFiles}) => (
                             <div {...getRootProps()}>
                                 <input {...getInputProps()} />
@@ -25,6 +25,7 @@ export default class Homescreen extends Component {
                                     {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
                                         <li>
                                             {acceptedFile.name}
+                                            {console.log(this.state.fileisReady)}
                                         </li>
                                     ))}
                                 </ul>
