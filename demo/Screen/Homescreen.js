@@ -17,13 +17,17 @@ export default class Homescreen extends Component {
         const filename = {
             filename : this.state.filename
         }
+        //const formData = new FormData();
+        //formData.append('filename', this.state.filename)
         return fetch('http://127.0.0.1:8000/filename/', {
-            mode : "cors",
+            //mode : "no-cors",
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type' : 'application/json'
+                //'Content-Type': 'multipart/form-data',
             },
             body: JSON.stringify(filename)
+            //body: formData
         }).then(res=> {
             if(res.status != 200) {
                 console.log("error")
