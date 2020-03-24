@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Picker, Button } from 'react-native'
-import Dropzone from 'react-dropzone'
+import axios from 'axios'
+import DropzoneComponent from '../Component/DropzoneComponent'
 import MainHeader from '../Component/MainHeader'
 
 
@@ -9,23 +10,38 @@ export default class Homescreen extends Component {
         super(props)
         this.state = {
             function : '',
-            file : ''
+            filename : '',
+            files : []
         } 
-        this.pressSumbitButtom = this.pressSumbitButtom.bind(this) 
+        this.onPressSubmitButton = this.onPressSubmitButton.bind(this)
+        this.changeFilename = this.changeFilename.bind(this)
+        this.onDrop = this.onDrop.bind(this)
     }
-    pressSumbitButtom() {
-        var formData = new FormData()
-        formData.append('file', this.state.file)
-        return fetch('http://127.0.0.1:8000/file/', {
-            method: 'POST',
-            headers: {
-                "Accept" : "application/json",
-                'Content-Type': 'multipart/form-data',
-            },
-            body: formData
-        }).then(res =>
-            res.json()
-        ).then(data => console.log(data))
+    changeFilename (filename) {
+        this.setState({ filename : filename })
+    }
+    onDrop (files) {
+        this.setState({
+            files: files.map(file => Object.assign(file, {
+              preview: URL.createObjectURL(file)
+            }))
+        })
+    }
+    onPressSubmitButton() {
+        const files = this.state.files
+        const uploaders = files.map(file => {
+          const formData = new FormData()
+          formData.append('file', file);
+    
+          return axios.post('http://127.0.0.1:8000/file/', formData, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          })
+        })
+    
+        axios.all(uploaders).then(() => {
+          // remove files once they've all been uploaded
+          this.setState({ files: [], filename : '' })
+        })
     }
     render() {
         return (
@@ -33,22 +49,7 @@ export default class Homescreen extends Component {
                 <MainHeader/>
                 <View style={styles.container}>
                     <Text style={{marginTop: 10}}>Hello Demo Version</Text>
-                    <Dropzone>
-                        {({getRootProps, getInputProps, acceptedFiles}) => (
-                            <div {...getRootProps()}>
-                                <input {...getInputProps()} />
-                                {acceptedFiles.length > 0 ? '' : "Click me or drag a file to upload!"}
-                                <ul>
-                                    {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
-                                        this.state.file ? '' : this.setState({file : acceptedFile.name}),
-                                        <li>
-                                            {acceptedFile.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </Dropzone>
+                    <DropzoneComponent changeFilename = {this.changeFilename} onDrop = {this.onDrop} filename = {this.state.filename} />
                     <Picker
                         selectedValue={this.state.function}
                         style={{height: 50, width: 200}}
@@ -60,7 +61,7 @@ export default class Homescreen extends Component {
                             <Picker.Item label="Style Transfer" value= "Style Transfer" />
                             <Picker.Item label="Frame Interpolation" value= "Frame Interpolation" />
                     </Picker>
-                    {(this.state.function) && (this.state.file) ?  <Button title= 'submit' style={{ width : 50, height: 100}} onPress={this.pressSumbitButtom}/> : <Text/>}
+                    {(this.state.function) && (this.state.filename) ?  <Button title= 'submit' style={{ width : 50, height: 100}} onPress={this.onPressSubmitButton}/> : <Text/>}
                 </View>
             </View>
         );

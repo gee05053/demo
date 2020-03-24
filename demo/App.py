@@ -19,8 +19,9 @@ def get_profile(username) :
 def get_filepath() :
     response = jsonify({'state':'ee'})
     if request.method == 'POST' :
-        print('response: ',response, 'request: ', request)
-        print(request.files)
+        print(request.files['file'])
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
         response= jsonify({'state':'ff'})
         return response
     return response
