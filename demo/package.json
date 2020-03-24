@@ -8,7 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@eva-design/eva": "^1.4.0",
     "@react-navigation/native": "^5.0.9",
+    "@ui-kitten/components": "^4.4.1",
+    "axios": "^0.19.2",
     "cors": "^2.8.5",
     "expo": "~36.0.0",
     "native-base": "^2.13.8",
@@ -20,6 +23,9 @@
     "react-native-gesture-handler": "^1.6.0",
     "react-native-reanimated": "^1.7.0",
     "react-native-screens": "^2.3.0",
+    "react-native-svg": "^12.0.3",
+    "react-native-ui-kitten": "^4.4.1",
+    "react-native-video": "^4.4.5",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.2.2",
     "react-navigation-drawer": "^2.4.2"

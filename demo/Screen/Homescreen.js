@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Picker, Button } from 'react-native'
 import axios from 'axios'
 import DropzoneComponent from '../Component/DropzoneComponent'
 import MainHeader from '../Component/MainHeader'
-
+import UI from '../Component/UI'
 
 export default class Homescreen extends Component {
     constructor (props) {
@@ -63,6 +63,8 @@ export default class Homescreen extends Component {
                     </Picker>
                     {(this.state.function) && (this.state.filename) ?  <Button title= 'submit' style={{ width : 50, height: 100}} onPress={this.onPressSubmitButton}/> : <Text/>}
                 </View>
+                <Text>dasdsads</Text>
+                <UI/>
             </View>
         );
     }
