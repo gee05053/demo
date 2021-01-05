@@ -11,7 +11,7 @@
     "@eva-design/eva": "^1.4.0",
     "@react-navigation/native": "^5.0.9",
     "@ui-kitten/components": "^4.4.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "expo": "~36.0.0",
     "native-base": "^2.13.8",
